@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.seven.mapper.review_BoardMapper">
+
+  <insert id="insertReview_Board">
+  	insert into review_board(product_num,member_id,review_board_num, review_board_content, review_board_date) values(${product_num},#{member_id},#{review_board_num},#{review_board_content},#{review_board_date})
+  </insert>
+  
+  <select id="getMaxReview_BoardNum" resultType="java.lang.Integer">
+		select max(review_board_num) from review_board
+  </select>
+  
+  <select id="Review_boardList" resultType="com.seven.domain.Review_boardBean">
+  	select * from review_board order by review_board_num desc limit #{startRow},#{pageSize}
+  </select>
+  
+  <select id="getreview_BoardCount" resultType="java.lang.Integer">
+		select count(*) from review_board
+  </select>
+  
+  <select id="getreview_Board" resultType="com.seven.domain.Review_boardBean">
+  		select * from review_board where review_board_num=#{review_board_num}
+  </select>
+  
+  <select id="numCheck" resultType="com.seven.domain.Review_boardBean">
+  		select * from review_board where review_board_num=#{review_board_num} and pass=#{pass}
+  </select>
+  
+  <update id="updateReview_Board">
+		update review_board set review_board_content=#{review_board_content} where review_board_num=#{review_board_num}
+  </update>
+  
+  <delete id="deleteReview_Board">
+		delete from review_board where review_board_num=#{review_board_num}
+  </delete>
+  
+</mapper>
+
+
+
+
+
+

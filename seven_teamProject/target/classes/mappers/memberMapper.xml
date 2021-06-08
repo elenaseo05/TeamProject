@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.seven.mapper.MemberMapper">
+
+		<!-- 
+		sql 구문의 끝에 세미콜론(;)을 쓰지 마세요
+		values 입력은 #{column}
+		resultType → return이라 생각하시면 됩니다
+		resultType이 MemberBean이라면 패키지 명도 정확하게 표기해야 합니다	(com.seven.domain.MemberBean)
+		 -->
+	<insert id="insertMember">
+		insert into member(member_id, member_pass, member_name, member_email, member_address, member_zipcode, member_address2, member_phone, member_birth, member_joindate) values(#{member_id}, #{member_pass}, #{member_name}, #{member_email}, #{member_address}, #{member_zipcode}, #{member_address2}, #{member_phone}, #{member_birth}, #{member_joindate})
+	</insert>
+	
+	<select id="userCheck" resultType="com.seven.domain.MemberBean">
+		select * from member where member_id=#{member_id} and member_pass=#{member_pass}
+	</select>
+	
+	<select id="getMember" resultType="com.seven.domain.MemberBean">
+		select * from member where member_id=#{member_id}
+	</select>
+	
+	<update id="updateMember">
+		update member set member_pass = #{member_pass}, member_name = #{member_name}, member_email = #{member_email}, member_address = #{member_address}, member_zipcode = #{member_zipcode}, member_address2 = #{member_address2}, member_phone = #{member_phone}, member_birth = #{member_birth} where member_id = #{member_id}
+	</update>
+	
+	<delete id="deleteMember">
+		delete from member where member_id = #{member_id}
+	</delete>
+	
+	<select id="getMemberList" resultType="com.seven.domain.MemberBean">
+		select * from member
+	</select>
+	
+	<select id="getMemberList_byPeriod" resultType="com.seven.domain.MemberBean">
+	select * from member 
+	where member_joindate between #{startDate} and #{endDate} order by member_joindate desc
+	</select>
+	
+	<select id="getMemberList_byId" resultType="com.seven.domain.MemberBean">
+	select * from member 
+	where member_id = #{member_id}
+	</select>
+	
+	<select id="getMemberList_byName" resultType="com.seven.domain.MemberBean">
+	select * from member 
+	where member_name = #{member_name}
+	</select>
+
+<!-- 비밀번호 수정 -->
+	<update id="updatePw" >
+	update member set member_pass = #{member_pass} where member_id = #{member_id}
+	</update>
+	
+	<select id="idCheck" resultType="com.seven.domain.MemberBean">
+		select * from member where member_id=#{member_id} and member_pass=#{member_pass}
+	</select>
+	
+		
+	<select id="idCheck2" resultType="com.seven.domain.MemberBean">
+		select * from member where member_id=#{member_id} 
+	</select>
+
+</mapper>

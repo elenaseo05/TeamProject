@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.seven.mapper.WishMapper">
+	
+	<select id="getWishProductList" parameterType="java.lang.String" resultType="com.seven.domain.ProductBean">
+		select * from wish right join product on wish.product_num = product.product_num where wish.member_id = #{member_id}
+	</select>
+	
+	<!-- 추가 삭제 확인 상품상세페이지 및 리스트에서 사용 -->
+	<select id="wishCheck" resultType="com.seven.domain.WishBean">
+		select * from wish where member_id=#{member_id} and product_num=#{product_num}
+	</select>
+
+	<delete id="wishDelete"> <!-- 리턴값 없음  -->
+		delete from wish where member_id=#{member_id} and product_num=#{product_num}
+	</delete>
+	
+	<insert id="wishInsert"> <!-- 리턴값 없음  -->
+		insert into wish (wish_date, member_id, product_num) values (#{wish_date}, #{member_id}, #{product_num})
+	</insert>
+	<!-- 추가 삭제 확인 상품상세페이지 및 리스트에서 사용 -->
+
+</mapper>

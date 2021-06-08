@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.seven.mapper.CartsMapper">
+
+		<!-- 
+		sql 구문의 끝에 세미콜론(;)을 쓰지 마세요
+		values 입력은 #{column}
+		resultType → return이라 생각하시면 됩니다
+		resultType이 MemberBean이라면 패키지 명도 정확하게 표기해야 합니다	(com.seven.domain.MemberBean)
+		 -->
+	<insert id="insertCart">
+		insert into cart(cart_date,cart_count,member_id,product_num,product_size,cart_num )
+		values(#{cart_date}, #{cart_count}, #{member_id}, #{product_num},#{product_size},#{cart_num }) 
+	
+	</insert>
+	
+	<select id="userCheck" resultType="com.seven.domain.MemberBean">
+		select * from member where member_id=#{member_id} and member_pass=#{member_pass}
+	</select>
+	
+	<select id="getMember" resultType="com.seven.domain.MemberBean">
+		select * from member where member_id=#{id}
+	</select>
+	
+	
+	<delete id="deleteCart">
+		delete from cart where product_num = #{product_num} AND member_id=#{member_id} AND product_size=#{product_size}
+	</delete>
+	
+	<select id="getCartList" resultType="com.seven.domain.CartBean">
+		select * from cart where member_id=#{member_id} 
+	</select>
+	
+	<select id="getProduct" resultType="com.seven.domain.ProductBean">
+		select * from product where product_num=#{num}
+	</select>
+	
+	<select id="ProductCheck" resultType="com.seven.domain.ProductBean">
+		select * from product where product_num=#{product_num}
+	</select>
+	
+	<update id="cartupdate" > 
+ 	update cart set cart_count=#{cart_count}  where member_id=#{member_id} and product_num=#{product_num}  
+ </update>
+ 
+   <select id="cartcheck" resultType="com.seven.domain.CartBean">
+   	select * from cart where member_id=#{member_id} and product_num=#{product_num} AND product_size=#{product_size} 
+   </select>
+
+   
+   <update id="updateCheckCount" > 
+ 	update cart set cart_count=cart_count+1  where member_id=#{member_id} and product_num=#{product_num}
+ </update>
+ 
+ <!-- 카트 비우기 -->
+	<delete id="cartAllDelete">
+ 		delete from cart where  member_id=#{member_id}
+	</delete>
+	
+	<select id="getMaxCartNum" resultType="java.lang.Integer">
+		select max(cart_num) from cart
+	</select>
+
+</mapper>

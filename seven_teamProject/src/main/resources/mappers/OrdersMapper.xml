@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.seven.mapper.OrdersMapper">
+
+	<select id="getOrderList" resultType="com.seven.domain.OrdersBean">
+		select orders.orders_date, orders.orders_address, orders.orders_status, orders.orders_count, orders.product_num, orders.orders_num2
+		from orders right join product 
+		on orders.product_num = product.product_num 
+		where orders.member_id = #{member_id}
+		order by orders_date desc;
+	</select>
+
+	<select id="getProductOrderList" resultType="com.seven.domain.ProductBean">
+		select product.product_title, product.product_price, product.product_image, product.product_num
+		from orders left join product 
+		on orders.product_num = product.product_num 
+		where orders.member_id =  #{member_id}
+		order by orders_date desc;
+	</select>
+	
+	<select id="ordersList" resultType="com.seven.domain.CartBean">
+		select * from orders where member_id=#{member_id} 
+	</select>
+	
+	<select id="getPaymentinfo" resultType="com.seven.domain.OrdersBean">
+		select * from orders where orders_num2=#{orders_num2} and member_id= #{member_id}
+	</select>
+	
+	<select id="updateStatus" >
+		update orders set orders_status=#{orders_status} where orders_num2=#{orders_num2} and member_id= #{member_id}
+	</select>
+
+	<insert id="insertOrders">
+	insert into orders(orders_num,orders_date,orders_address,orders_status,orders_count,member_id,product_num,orders_num2,orders_name,orders_payment,orders_size )
+		values(#{orders_num}, #{orders_date}, #{orders_address}, #{orders_status}, #{orders_count},#{member_id},#{product_num},#{orders_num2},#{orders_name},#{orders_payment},#{orders_size}) 
+	
+	</insert>
+	
+	<delete id="deleteOrders">
+		delete from orders where product_num = #{product_num} AND member_id=#{member_id}
+	</delete>
+	
+	
+	<select id="getMaxNum" resultType="java.lang.Integer">
+		select max(orders_num) from orders
+	</select>
+	
+</mapper> 

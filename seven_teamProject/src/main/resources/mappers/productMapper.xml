@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.seven.mapper.ProductMapper">
+
+	
+	<select id="getMaxProduct_num" resultType="java.lang.Integer">
+		select max(product_num) from product
+	</select>
+
+	<insert id="insertProduct">
+		insert into product(product_num, product_title, product_price, product_image, product_color, product_size, product_stock, product_category, product_detail_text, product_detail_img1, product_detail_img2, product_detail_img3, product_detail_img4, product_detail_del_info, product_detail_sale, product_detail_date, product_detail_admin_note)
+		values(#{product_num}, #{product_title}, #{product_price}, #{product_image}, #{product_color}, #{product_size}, #{product_stock}, #{product_category}, #{product_detail_text}, #{product_detail_img1}, #{product_detail_img2}, #{product_detail_img3}, #{product_detail_img4}, #{product_detail_del_info}, #{product_detail_sale}, #{product_detail_date}, #{product_detail_admin_note})
+	</insert>
+	
+	<update id="updateProduct">
+		update product set 
+		product_title = #{product_title},
+		product_price = #{product_price},
+		product_image = #{product_image},
+		product_stock = #{product_stock},
+		product_detail_text = #{product_detail_text},
+		product_detail_img1 = #{product_detail_img1},
+		product_detail_img2 = #{product_detail_img2},
+		product_detail_img3 = #{product_detail_img3},
+		product_detail_img4 = #{product_detail_img4},
+		product_detail_del_info = #{product_detail_del_info},
+		product_detail_sale = #{product_detail_sale},
+		product_detail_admin_note = #{product_detail_admin_note}
+		where product_num = #{product_num}
+	</update>
+	
+	<delete id="deleteProduct">
+		delete from product where product_num = #{product_num}
+	</delete>
+	
+	<select id="getProduct" resultType="com.seven.domain.ProductBean">
+		select * from product where product_num = #{product_num}
+	</select>	
+	
+	<select id="getProductList" resultType="com.seven.domain.ProductBean">
+		select * from product limit #{startRow},#{pageSize}
+	</select>
+
+	<select id="getProductCount" resultType="java.lang.Integer">
+		select count(*) from product;
+	</select>
+	
+	<select id="getPriceList" resultType="com.seven.domain.ProductBean">
+		select * from product where product_price BETWEEN #{lower} AND #{upper} order by product_price desc limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="getLowList" resultType="com.seven.domain.ProductBean">
+		select * from product order by product_price limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="getHighList" resultType="com.seven.domain.ProductBean">
+		select * from product order by product_price desc limit #{startRow},#{pageSize}
+	</select>
+	
+	<select id="getPopularList" resultType="com.seven.domain.ProductBean">
+		select product.product_num, count(orders.product_num) "popular", product.product_title, product.product_price, product.product_image, product.product_detail_text 
+		from orders JOIN product
+		ON (product.product_num=orders.product_num) 
+		group by orders.product_num
+		order by popular desc
+	</select>
+	
+	<select id="getCategoryList" resultType="com.seven.domain.ProductBean">
+		select* from product where product_category = #{category} order by product_num
+	</select>
+	
+	
+</mapper>
